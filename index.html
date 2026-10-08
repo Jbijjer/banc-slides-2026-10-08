@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notation — recréations de modèles</title>
+<style>
+  :root{ --bg:#f4f5f7; --ink:#1b1d24; --mut:#6b7280; --acc:#0a7ec9; --ok:#0f9d58; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);
+       font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+       padding:18px 18px 90px;}
+  header{max-width:1180px;margin:0 auto 14px;display:flex;flex-wrap:wrap;
+         align-items:baseline;gap:14px;}
+  h1{font-size:20px;font-weight:700}
+  .hint{color:var(--mut);font-size:13px;flex:1 1 320px}
+  .wrap{max-width:1180px;margin:0 auto;display:grid;
+        grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+  .stage{background:#111;border-radius:10px;padding:12px;box-shadow:0 6px 22px rgba(0,0,0,.13)}
+  .stage img{width:100%;display:block;border-radius:5px;background:#fff}
+  .cap{margin-top:10px;color:#cfd3da;font-size:13px;display:flex;justify-content:space-between;gap:10px}
+  .panel{position:sticky;top:16px;background:#fff;border-radius:10px;padding:16px 16px 18px;
+         box-shadow:0 6px 22px rgba(0,0,0,.08)}
+  .q{margin-bottom:16px}
+  .q .lab{font-weight:600;font-size:14px}
+  .q .def{color:var(--mut);font-size:12.5px;line-height:1.4;margin:3px 0 8px}
+  .scale{display:flex;gap:5px}
+  .scale button{flex:1;height:34px;border:1px solid #d7dae0;background:#fff;border-radius:6px;
+                cursor:pointer;font-size:13px;font-variant-numeric:tabular-nums}
+  .scale button:hover{border-color:var(--acc)}
+  .scale button.on{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:700}
+  textarea{width:100%;min-height:74px;border:1px solid #d7dae0;border-radius:6px;padding:9px;
+           font:inherit;font-size:13.5px;resize:vertical}
+  .nav{display:flex;gap:8px;margin-top:6px}
+  .nav button{flex:1;padding:10px;border:0;border-radius:7px;background:#e9ebef;cursor:pointer;
+              font-size:14px;font-weight:600}
+  .nav button:hover{background:#dfe2e8}
+  .nav .go{background:var(--acc);color:#fff}
+  .nav .go:hover{background:#0869a8}
+  .bar{display:flex;flex-wrap:wrap;gap:5px;margin-top:16px;max-width:1180px}
+  .bar a{width:30px;height:30px;border-radius:6px;background:#fff;border:1px solid #d7dae0;
+         display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;
+         text-decoration:none;color:var(--ink)}
+  .bar a.done{background:var(--ok);color:#fff;border-color:var(--ok);font-weight:700}
+  .bar a.cur{outline:2px solid var(--acc)}
+  .moy{margin-top:16px;background:#fff;border-radius:10px;padding:12px 14px;font-size:13.5px;
+       max-width:1180px}
+  .moy b{font-variant-numeric:tabular-nums}
+  .tools{max-width:1180px;margin:16px auto 0;display:flex;gap:10px;flex-wrap:wrap}
+  .tools button{padding:9px 15px;border:0;border-radius:7px;background:#dfe2e8;cursor:pointer;
+                font-weight:600;font-size:13.5px}
+  .tools .exp{background:var(--ok);color:#fff}
+  .tools .clr{background:#f3d9d9}
+  @media(max-width:860px){ .wrap{grid-template-columns:1fr} .panel{position:static} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Notation — 10 planches</h1>
+  <div class="hint">Chaque planche est <b>une slide entière</b>. Certaines viennent de modèles
+  professionnels, d'autres sont <b>composées par l'agent</b>. Le lot est mélangé : tu ne sais pas
+  lesquelles. Note les deux axes séparément, puis commente. La progression est gardée.</div>
+</header>
+
+<div class="wrap">
+  <div>
+    <div class="stage">
+      <img id="img" alt="planche à noter">
+      <div class="cap"><span id="capL"></span><span id="capR"></span></div>
+    </div>
+    <div class="bar" id="bar"></div>
+    <div class="moy" id="moy"></div>
+  </div>
+
+  <aside class="panel">
+    <div class="q">
+      <div class="lab">1 · Qualité de la slide</div>
+      <div class="def">Est-ce une slide bien faite : lisible, hiérarchie claire, espace bien géré,
+      couleurs et typographie cohérentes ? (juge la slide en elle-même)</div>
+      <div class="scale" id="s1"></div>
+    </div>
+    <div class="q">
+      <div class="lab">2 · Niveau professionnel</div>
+      <div class="def">Est-ce que ça pourrait sortir d'un modèle commercial payant, ou est-ce que
+      ça a l'air amateur / fait maison ? (juge le niveau de finition)</div>
+      <div class="scale" id="s2"></div>
+    </div>
+    <div class="q">
+      <div class="lab">Commentaire (le plus utile)</div>
+      <div class="def">Qu'est-ce qui est bien, qu'est-ce qui rate, et pourquoi.</div>
+      <textarea id="com" placeholder="Ex. : le titre est net mais l'icône fait bricolage…"></textarea>
+    </div>
+    <div class="nav">
+      <button id="prev">← Précédente</button>
+      <button id="next" class="go">Suivante →</button>
+    </div>
+  </aside>
+</div>
+
+<div class="tools">
+  <button class="exp" id="export">Exporter notes-slides.json</button>
+  <button class="clr" id="clear">Tout effacer</button>
+</div>
+
+<script>
+const SLIDES = [
+  {id:"p01", fichier:"imgs/p01.jpg"}, {id:"p02", fichier:"imgs/p02.jpg"},
+  {id:"p03", fichier:"imgs/p03.jpg"}, {id:"p04", fichier:"imgs/p04.jpg"},
+  {id:"p05", fichier:"imgs/p05.jpg"}, {id:"p06", fichier:"imgs/p06.jpg"},
+  {id:"p07", fichier:"imgs/p07.jpg"}, {id:"p08", fichier:"imgs/p08.jpg"},
+  {id:"p09", fichier:"imgs/p09.jpg"}, {id:"p10", fichier:"imgs/p10.jpg"}
+];
+const KEY = "banc_modeles_v1";
+let store = JSON.parse(localStorage.getItem(KEY) || "{}");
+let cur = 0;
+
+const save = () => localStorage.setItem(KEY, JSON.stringify(store));
+const st = id => store[id] || (store[id] = {note_qualite:null, note_pro:null, commentaire:""});
+
+// échelles
+function buildScale(el, field){
+  for(let n=1;n<=10;n++){
+    const b=document.createElement("button"); b.textContent=n; b.dataset.n=n;
+    b.onclick=()=>{ st(SLIDES[cur].id)[field]=n; save(); render(); };
+    el.appendChild(b);
+  }
+}
+buildScale(document.getElementById("s1"),"note_qualite");
+buildScale(document.getElementById("s2"),"note_pro");
+
+function render(){
+  const s = SLIDES[cur], d = st(s.id);
+  document.getElementById("img").src = s.fichier;
+  document.getElementById("capL").textContent = `Planche ${cur+1} / ${SLIDES.length}`;
+  document.getElementById("capR").textContent = s.id;
+  document.getElementById("com").value = d.commentaire || "";
+  const mark=(el,f)=>{ [...el.children].forEach(b=> b.classList.toggle("on", +b.dataset.n===d[f])); };
+  mark(document.getElementById("s1"),"note_qualite");
+  mark(document.getElementById("s2"),"note_pro");
+  // barre
+  const bar=document.getElementById("bar"); bar.innerHTML="";
+  SLIDES.forEach((sl,i)=>{
+    const a=document.createElement("a"); a.textContent=i+1;
+    const dd=store[sl.id];
+    if(dd && dd.note_qualite!=null && dd.note_pro!=null) a.classList.add("done");
+    if(i===cur) a.classList.add("cur");
+    a.onclick=()=>{cur=i;render();}; bar.appendChild(a);
+  });
+  // moyennes
+  const done = SLIDES.filter(sl=>{const d2=store[sl.id]; return d2 && d2.note_qualite!=null && d2.note_pro!=null;});
+  const avg = f => done.length ? (done.reduce((a,sl)=>a+store[sl.id][f],0)/done.length).toFixed(2) : "—";
+  document.getElementById("moy").innerHTML =
+    `Notées : <b>${done.length}/${SLIDES.length}</b> &nbsp;·&nbsp; `
+  + `Moyenne qualité : <b>${avg("note_qualite")}</b> &nbsp;·&nbsp; `
+  + `Moyenne niveau pro : <b>${avg("note_pro")}</b>`;
+}
+document.getElementById("com").oninput = e => { st(SLIDES[cur].id).commentaire = e.target.value; save(); };
+document.getElementById("prev").onclick = ()=>{ if(cur>0){cur--;render();} };
+document.getElementById("next").onclick = ()=>{ if(cur<SLIDES.length-1){cur++;render();} };
+document.addEventListener("keydown", e=>{
+  if(e.key==="ArrowLeft") document.getElementById("prev").click();
+  if(e.key==="ArrowRight") document.getElementById("next").click();
+});
+document.getElementById("export").onclick = ()=>{
+  const out = {version:"1.0", genere_le:new Date().toISOString(),
+    slides: SLIDES.map((s,i)=>({ id:s.id, ordre:i+1,
+      note_qualite: st(s.id).note_qualite, note_pro: st(s.id).note_pro,
+      commentaire: st(s.id).commentaire }))};
+  const blob = new Blob([JSON.stringify(out,null,1)], {type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="notes-slides.json"; a.click();
+};
+document.getElementById("clear").onclick = ()=>{
+  if(confirm("Effacer toutes les notes ?")){ store={}; save(); render(); }
+};
+render();
+</script>
+</body>
+</html>

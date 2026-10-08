@@ -1,0 +1,72 @@
+[
+ {
+  "id": "p01",
+  "fichier": "imgs/p01.jpg",
+  "modele": "Employee Onboarding",
+  "forme": "diagonale",
+  "_verite": "recreation"
+ },
+ {
+  "id": "p02",
+  "fichier": "imgs/p02.jpg",
+  "modele": "Vision & Mission",
+  "forme": "deux colonnes + icônes",
+  "_verite": "recreation"
+ },
+ {
+  "id": "p03",
+  "fichier": "imgs/p03.jpg",
+  "modele": "Self Introduction",
+  "forme": "bandeau dégradé",
+  "_verite": "recreation"
+ },
+ {
+  "id": "p04",
+  "fichier": "imgs/p04.jpg",
+  "modele": "Self Introduction",
+  "forme": "bandeau dégradé",
+  "_verite": "original"
+ },
+ {
+  "id": "p05",
+  "fichier": "imgs/p05.jpg",
+  "modele": "Vision & Mission",
+  "forme": "deux colonnes + icônes",
+  "_verite": "original"
+ },
+ {
+  "id": "p06",
+  "fichier": "imgs/p06.jpg",
+  "modele": "Strategy Consulting",
+  "forme": "60/40 + accent",
+  "_verite": "original"
+ },
+ {
+  "id": "p07",
+  "fichier": "imgs/p07.jpg",
+  "modele": "Go-To-Market",
+  "forme": "titre dégradé",
+  "_verite": "recreation"
+ },
+ {
+  "id": "p08",
+  "fichier": "imgs/p08.jpg",
+  "modele": "Strategy Consulting",
+  "forme": "60/40 + accent",
+  "_verite": "recreation"
+ },
+ {
+  "id": "p09",
+  "fichier": "imgs/p09.jpg",
+  "modele": "Go-To-Market",
+  "forme": "titre dégradé",
+  "_verite": "original"
+ },
+ {
+  "id": "p10",
+  "fichier": "imgs/p10.jpg",
+  "modele": "Employee Onboarding",
+  "forme": "diagonale",
+  "_verite": "original"
+ }
+]
